@@ -2,9 +2,7 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import "../styles/menu-item.styles.scss";
 
-const MenuItem = ({ title, imageUrl, size, history, linkUrl, match }) => {
-  console.log(`url is ${match.url}`);
-  console.log(`linkurl is ${linkUrl}`);
+const MenuItem = ({ title, imageUrl, size, history, linkUrl, match }) => {  
   return (
     <div
       className={`${size} menu-item`}
