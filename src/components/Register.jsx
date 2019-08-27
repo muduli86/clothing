@@ -1,28 +1,46 @@
 import React, { Component } from "react";
-import "../styles/sign-in.styles.scss.scss";
+import '../styles/sign-up.styles.scss';
 
 import FormInput from "./FormInput";
 import CustomButton from "./CustomButton";
+
+import { auth, createUserProfileDocument } from "../firebase/firebase.util"
 
 class Register extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      displayName: "",
       email: "",
-      password: ""
+      password: "",
+      confirmPassword: ""
     };
   }
-  handleSubmit = event => {
+  handleSubmit = async event => {
     event.preventDefault();
-    this.setState = {
-      email: "",
-      password: ""
-    };
+    const { displayName, email, password, confirmPassword } = this.state;
+    if (password !== confirmPassword) {
+      alert("Passwords donot match");
+      return;
+    }
+
+    try {
+      const { user } = await auth.createUserWithEmailAndPassword(email, password);
+      createUserProfileDocument(user, { displayName });
+      this.setState = {
+        displayName: "",
+        email: "",
+        password: "",
+        confirmPassword: ""
+      };
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   handleChange = event => {
-    const { value, name } = event.target;
+    const { name, value } = event.target;
     this.setState({
       [name]: value
     });
@@ -30,16 +48,18 @@ class Register extends Component {
 
   render() {
     return (
-      <div className="sign-in">
-        <h2>I do not have an Account</h2>        
+      <div className="sign-up">
+        <h2>I do not have an Account</h2>
+        <span>Sign Up with Email and Password</span>
         <form onSubmit={this.handleSubmit}>
           <FormInput
-            name="Dispaly Name"
-            value={this.state.email}
+            name="displayName"       
+            type="text"     
+            value={this.state.displayName}
             handleChange={this.handleChange}
-            label="Dispaly Name"
+            label="Display Name"
             required
-          />
+          />        
           <FormInput
             name="email"
             type="email"
@@ -57,9 +77,9 @@ class Register extends Component {
             required
           />
           <FormInput
-            name="confirm password"
+            name="confirmPassword"
             type="password"
-            value={this.state.password}
+            value={this.state.confirmPassword}
             handleChange={this.handleChange}
             label="Confirm Password"
             required
