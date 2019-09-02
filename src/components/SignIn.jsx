@@ -5,7 +5,7 @@ import FormInput from "./FormInput";
 import CustomButton from "./CustomButton";
 
 import { signInWithGoogle } from "../firebase/firebase.util";
-import { auth, createUserProfileDocument } from "../firebase/firebase.util";
+import { auth } from "../firebase/firebase.util";
 
 class SignIn extends Component {
   constructor(props) {
